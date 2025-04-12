@@ -72,6 +72,8 @@ class Torrent:
   def _get_peers_list(self):
     while not self.torrent.isEnoughPiece:
       response = self._send_message_to_tracker('started')
+      if response:
+        print("Found a response: ", response)
       torrent_info = response.json() if response != None else None
       if torrent_info:
         peers_list = [(peer['ip_address'],peer['port']) for peer in torrent_info['peers']]
