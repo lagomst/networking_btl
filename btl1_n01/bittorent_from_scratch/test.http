@@ -1,0 +1,36 @@
+### 
+POST http://localhost:8000/api/signup/
+Content-Type: application/json
+
+{
+    "username": "nhantester01",
+    "password": "123"
+}
+###
+POST http://localhost:8000/api/login/
+Content-Type: application/json
+
+{
+    "username": "nhantester01",
+    "password": "123"
+}
+
+### XEM CAC THONG SO HIEN CO CUA TRACKER
+POST http://localhost:8000/api/test/
+
+### event = completed, tạo file trong datbase vì chưa có file nào. LẤY CÁI ACCESS TOKEN GẮN VÔ ĐÂY
+GET http://localhost:8000/api/announce/?info_hash=sha21sedrsdbkfsd233434234&peer_id=peer01&port=6663&uploaded=100&downloaded=0&left=0&event=completed&compact=0
+Content-Type: application/json
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMwNzY0OTQzLCJpYXQiOjE3MzA3NjQ2NDMsImp0aSI6IjhjN2VhMDU4MDE3OTRmNmM4YzM3YzczZjdkZTIyYjE3IiwidXNlcl9pZCI6NH0.QFZzQJS8eM5f6pg345Vp4tSw_rUTa2i1VSWKzdInTmQ
+
+{
+
+}
+
+### sau khi tạo thì có thể nhập đúng info_hash để lấy file
+GET http://localhost:8000/api/scrape/?info_hash=onlyon8000
+Content-Type: application/json
+
+
+### KHÔNG CÓ FILE->TRẢ VỀ FAILURE ERORR.            
+GET http://localhost:8000/api/announce?info_hash=8ef3e98f12a54a255ad599f6696f2352a5133d64&peer_id=10.0.7.122&port=8000&uploaded=0&downloaded=0&left=27579194&event=started
