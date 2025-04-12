@@ -2,6 +2,8 @@ from pathlib import Path
 import bencodepy
 import hashlib
 import functools
+import urllib.parse
+
 class TorrentInfo:
     def __init__(self, torrent_file_path):
         self.torrent_file_path = torrent_file_path
@@ -24,7 +26,9 @@ class TorrentInfo:
 
         # Calculate info_hash
         info_bencoded = bencodepy.encode(info)
-        self.info_hash = hashlib.sha1(info_bencoded).hexdigest()
+        
+        self.info_hash_raw = hashlib.sha1(info_bencoded).digest()
+        self.info_hash = urllib.parse.quote_from_bytes(self.info_hash_raw, safe='')
         self.total_bytes = functools.reduce(lambda total , file: total + int(file['length']),self.files,0)
     def get_piece_sizes(self):
         piece_sizes = []

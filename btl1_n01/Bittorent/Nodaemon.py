@@ -3,6 +3,8 @@ import threading
 import os 
 import requests
 import time
+import bencodepy
+
 from FileStructure import FileStructure
 from PeerConnection import P2PConnection
 from Torrent import TorrentInfo
@@ -72,9 +74,13 @@ class Torrent:
   def _get_peers_list(self):
     while not self.torrent.isEnoughPiece:
       response = self._send_message_to_tracker('started')
-      if response:
-        print("Found a response: ", response)
-      torrent_info = response.json() if response != None else None
+      print(f"Status code: {response.status_code}")
+      print(f"Response text: {response.text}")
+      decoded = bencodepy.decode(response.content)
+      torrent_info = {k.decode(): v for k, v in decoded.items()}
+      if 'failure reason' in torrent_info:
+        print("Tracker error:", torrent_info['failure reason'].decode() if isinstance(torrent_info['failure reason'], bytes) else torrent_info['failure reason'])
+            
       if torrent_info:
         peers_list = [(peer['ip_address'],peer['port']) for peer in torrent_info['peers']]
         self.torrent.downloader.update_peer_list_from_tracker(peers_list)
