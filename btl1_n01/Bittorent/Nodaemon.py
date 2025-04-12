@@ -58,6 +58,7 @@ class Torrent:
       'event':event_type
     }
     tracker_url = self.get_tracker_url()
+    print("Getting response from tracker_url: ", tracker_url)
     try:
       respose = requests.get(url=tracker_url,params=params)
       if respose.status_code == 200:
